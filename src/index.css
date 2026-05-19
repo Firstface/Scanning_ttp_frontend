@@ -58,6 +58,55 @@ dd {
   min-height: 100vh;
 }
 
+.login-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: #f8fafc;
+}
+
+.login-panel {
+  width: min(460px, 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+  padding: 32px;
+}
+
+.login-header,
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-form {
+  margin-top: 28px;
+}
+
+.login-button {
+  width: 100%;
+}
+
+.login-error {
+  margin-top: -4px;
+}
+
+.login-help {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.login-credentials {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
 .sidebar {
   padding: 24px 20px;
   border-right: 1px solid #e2e8f0;
@@ -245,6 +294,11 @@ dd {
   background: #ffffff;
   color: #334155;
   border-color: #d1d5db;
+}
+
+.nav-logout {
+  width: 100%;
+  margin-top: 12px;
 }
 
 .primary-button:disabled {

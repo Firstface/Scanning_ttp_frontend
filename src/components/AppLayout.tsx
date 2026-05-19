@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { useAuth } from './AuthProvider'
 
 const navItems = [
   { to: '/create', label: 'Create Task' },
@@ -6,6 +7,14 @@ const navItems = [
 ]
 
 export function AppLayout() {
+  const navigate = useNavigate()
+  const { logout, username } = useAuth()
+
+  function handleLogout() {
+    logout()
+    navigate('/login', { replace: true })
+  }
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -30,8 +39,11 @@ export function AppLayout() {
         </nav>
 
         <div className="tip-card">
-          <p className="tip-title">Views</p>
-          <p className="muted">Review task records, pipeline progress, shard results, and logs in one place.</p>
+          <p className="tip-title">Signed In</p>
+          <p className="muted">Current user: {username || 'admin'}</p>
+          <button className="secondary-button nav-logout" type="button" onClick={handleLogout}>
+            Log Out
+          </button>
         </div>
       </aside>
 

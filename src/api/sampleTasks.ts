@@ -1,4 +1,5 @@
 import { mockTaskLogs, mockTaskPipelines, mockTaskRecords, mockTaskShards } from '../data/mockRecords'
+import { clearAuth, getAuthToken } from '../lib/auth'
 import { API_BASE_URL, LOCAL_TASKS_KEY, PIPELINE_EXECUTORS } from '../lib/constants'
 import { buildDefaultPipeline, normalizeParentStatus } from '../lib/utils'
 import type {
@@ -13,8 +14,14 @@ import type {
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers ?? {})
+  const token = getAuthToken()
+
   if (init?.body && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json')
+  }
+
+  if (token && !headers.has('Authorization')) {
+    headers.set('Authorization', `Bearer ${token}`)
   }
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -23,6 +30,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   })
 
   if (!response.ok) {
+    if (response.status === 401) {
+      clearAuth()
+      if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
+        window.location.assign('/login')
+      }
+    }
     const text = await response.text()
     throw new Error(text || `Request failed with status ${response.status}`)
   }
